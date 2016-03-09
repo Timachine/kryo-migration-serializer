@@ -4,6 +4,7 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.serializers.FieldSerializer;
+import lombok.Data;
 import org.junit.Test;
 
 import java.io.*;
@@ -16,173 +17,42 @@ import static org.junit.Assert.*;
  */
 public class KryoMigrationSerializerTest {
 
+    @Data
     static class Boo {
         private List<Foo> foos;
-
-        public List<Foo> getFoos() {
-            return foos;
-        }
-
-        public void setFoos(List<Foo> foos) {
-            this.foos = foos;
-        }
-
-        @Override
-        public String toString() {
-            return "Boo{" +
-                    "foos=" + foos +
-                    '}';
-        }
     }
 
+    @Data
     static class Foo {
         private String id;
         private String name;
 
 //        private int age;
-//
-//        public int getAge() {
-//            return age;
-//        }
-//
-//        public void setAge(int age) {
-//            this.age = age;
-//        }
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return "Foo{" +
-                    "id='" + id + '\'' +
-                    ", name='" + name + '\'' +
-                    '}';
-        }
     }
 
+    @Data
     static class OldBoo {
-
-
         @FieldSerializer.Bind(CustomizedClassCollectionSerializer.class)
         private List<FooForMigrationRead> foos;
-
-        public List<FooForMigrationRead> getFoos() {
-            return foos;
-        }
-
-        public void setFoos(List<FooForMigrationRead> foos) {
-            this.foos = foos;
-        }
-
-        @Override
-        public String toString() {
-            return "OldBoo{" +
-                    "foos=" + foos +
-                    '}';
-        }
     }
 
+    @Data
     static class NewBoo {
         @FieldSerializer.Bind(CustomizedClassCollectionSerializer.class)
         private List<FooForMigrationWrite> foos;
-
-        public List<FooForMigrationWrite> getFoos() {
-            return foos;
-        }
-
-        public void setFoos(List<FooForMigrationWrite> foos) {
-            this.foos = foos;
-        }
-
-        @Override
-        public String toString() {
-            return "newBoo{" +
-                    "foos=" + foos +
-                    '}';
-        }
     }
 
+    @Data
     static class FooForMigrationRead {
         private String id;
         private String name;
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return "FooForMigrationRead{" +
-                    "id='" + id + '\'' +
-                    ", name='" + name + '\'' +
-                    '}';
-        }
     }
 
+    @Data
     static class FooForMigrationWrite {
         private String id;
         private String name;
         private int age;
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public int getAge() {
-            return age;
-        }
-
-        public void setAge(int age) {
-            this.age = age;
-        }
-
-
-        @Override
-        public String toString() {
-            return "FooForMigrationWrite{" +
-                    "id='" + id + '\'' +
-                    ", name='" + name + '\'' +
-                    ", age=" + age +
-                    '}';
-        }
     }
     private final Kryo kryo = new Kryo();
 
